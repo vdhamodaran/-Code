@@ -25,26 +25,86 @@ class linkedList<AnyType> implements Iterable<AnyType>{
   }
 
   //get the first element of the linkedList
-  public void getFirst(){
+  public Node getFirst(){
     Node temp = head;
     if(head!= null){
-      System.out.println("First Data: "+temp.data+" Next: "+temp.next);
+      System.out.println("First -- Data: "+temp.data+" Next: "+temp.next);
+      return temp;
+    }
+    else{
+      throw new NoSuchElementException();
+
+    }
+  }
+
+  //Delete the first element in the linkedList
+  public void deleteFirst(){
+    System.out.println("DeletedFirst -- Data: "+head.data+" Next: "+head.next);
+    head = head.next;
+  }
+  //add element in the end of a node
+  public void addLast(AnyType data){
+    if(head == null){
+      addFirst(data);
+    }
+    else{
+      Node<AnyType> temp = head;
+      while(temp!= null){
+        if(temp.next==null){
+            temp.next = new Node<AnyType>(data, null);
+            break;
+        }
+        temp=temp.next;
+      }
+      System.out.println("Added at last --Data: "+temp.next.data+" Next: "+temp.next.next);
+    }
+  }
+  //deleteElement at the last
+  public void deleteLast(){
+    if(head != null){
+      Node<AnyType> curr = head;
+      Node<AnyType> prev = null;
+      while(curr.next!= null){
+        prev=curr;
+        curr=curr.next;
+      }
+      prev.next= curr.next;
+      System.out.println("Deletedlast --Data: "+curr.data+" Next: "+curr.next);
+
     }
     else{
       throw new NoSuchElementException();
     }
   }
 
-  //
-  public void deleteFirst(){
-    System.out.println("DeletedFirst Data: "+head.data+" Next: "+head.next);
-    head = head.next;
+  //Get the node from the data
+  public Node getNode(AnyType data){
+    Node temp = head;
+    while(temp!= null){
+      if(temp.data == data){
+        System.out.println("Found -- Data: "+temp.data+" Next: "+temp.next);
+        return temp;
+      }
+      temp = temp.next;
+    }
+    return null;
   }
 
+  //delete a node which is specified
+  public void deleteNode(Node node){
+    if(node.next != null){
+        System.out.println("DeletedAtNode -- Node: "+node+" Data: "+node.next.data+" Next: "+node.next.next);
+        node.data = node.next.data;
+        node.next = node.next.next;
+    }
+    else{
+      throw new NoSuchElementException();
+    }
+  }
   //traverse and print list
   public void traverse(){
     Node temp = head;
-    System.out.println("List Contents");
+    System.out.println("-- List Contents --");
     while(temp!= null){
       System.out.println("Data: "+temp.data+" Next: "+temp.next);
       temp = temp.next;
@@ -91,6 +151,9 @@ class linkedList<AnyType> implements Iterable<AnyType>{
      list.traverse();
      list.getFirst();
      list.deleteFirst();
+     list.deleteNode(list.getNode("e"));
+     list.addLast("s");
+     list.deleteLast();
      list.traverse();
    }
 
