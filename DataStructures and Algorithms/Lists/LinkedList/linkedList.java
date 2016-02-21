@@ -82,8 +82,21 @@ class linkedList<AnyType> implements Iterable<AnyType>{
     Node temp = head;
     while(temp!= null){
       if(temp.data == data){
-        System.out.println("Found -- Data: "+temp.data+" Next: "+temp.next);
+        System.out.println("Found Node -- "+temp+" Data: "+temp.data+" Next: "+temp.next);
         return temp;
+      }
+      temp = temp.next;
+    }
+    return null;
+  }
+
+  //Get the node from the data
+  public Object getData(Node n){
+    Node temp = head;
+    while(temp!= null){
+      if(temp == n){
+        System.out.println("Found -- Data: "+temp.data+" at Next: "+temp.next);
+        return temp.data;
       }
       temp = temp.next;
     }
@@ -93,7 +106,7 @@ class linkedList<AnyType> implements Iterable<AnyType>{
   //delete a node which is specified
   public void deleteNode(Node node){
     if(node.next != null){
-        System.out.println("DeletedAtNode -- Node: "+node+" Data: "+node.next.data+" Next: "+node.next.next);
+        System.out.println("DeletedAtNode -- Node: "+node+" Data: "+node.data+" Next: "+node.next);
         node.data = node.next.data;
         node.next = node.next.next;
     }
@@ -101,14 +114,36 @@ class linkedList<AnyType> implements Iterable<AnyType>{
       throw new NoSuchElementException();
     }
   }
+  //Insert After
+  public void insertAfter(AnyType position,AnyType data){
+    Node temp = getNode(position);
+    temp.next = new Node(data,temp.next);
+    System.out.println("Inserted After -- "+position+" Data: "+temp.next.data+" Next: "+temp.next.next);
+  }
+  //insertBefore
+  public void insertBefore(AnyType position,AnyType data){
+    Node pos = getNode(position);
+    Node curr = head;
+    Node prev = null;
+    while(curr!= pos){
+      prev=curr;
+      curr=curr.next;
+    }
+    prev.next = new Node(data,prev.next);
+    curr.next = pos.next;
+    System.out.println("Inserted Before -- "+position+" Data: "+prev.next.data+" Next: "+prev.next.next);
+  }
+
+
   //traverse and print list
   public void traverse(){
     Node temp = head;
-    System.out.println("-- List Contents --");
+    System.out.println("\n-- List Contents --");
     while(temp!= null){
       System.out.println("Data: "+temp.data+" Next: "+temp.next);
       temp = temp.next;
     }
+    System.out.println();
   }
 
 //Node is an inner class which is a represntaion of node/block in a linkedList
@@ -143,6 +178,7 @@ class linkedList<AnyType> implements Iterable<AnyType>{
 
    }
    public static void main(String[] args) {
+     //Using Main to Check the LinkedList Functions
      linkedList<String> list = new linkedList <String>();
      list.addFirst("p");
      list.addFirst("a");
@@ -151,10 +187,18 @@ class linkedList<AnyType> implements Iterable<AnyType>{
      list.traverse();
      list.getFirst();
      list.deleteFirst();
+     list.traverse();
      list.deleteNode(list.getNode("e"));
+     list.traverse();
      list.addLast("s");
+     list.traverse();
      list.deleteLast();
      list.traverse();
+     list.insertAfter("a","n");
+     list.traverse();
+     list.insertBefore("n","o");
+     list.traverse();
+     list.getData(list.getNode("n"));
    }
 
 }
