@@ -1,4 +1,4 @@
-inp = 223336226
+inp = 22333006226
 s=str(inp)
 prev = s[0]
 array = []

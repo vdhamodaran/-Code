@@ -11,7 +11,65 @@ class treeNode(object):
             self.left.printTree()
         if self.right:
             self.right.printTree()
+    def invertTree(self, root):
+        if root:
+            root.left, root.right = root.right, root.left
+            self.invertTree(root.left)
+            self.invertTree(root.right)
+        return root
+    def isBalanced(self, root):
+        return self.checkBalance(root)>=0
 
+    def checkBalance(self,root):
+        if root == None:
+            return 0
+        # print root.data
+        left = self.checkBalance(root.left)
+        right = self.checkBalance(root.right)
+        # print "L: ",left, "R: ",right, "M: ",(max(left,right)+1)
+        if left<0 or right<0 or abs(left-right)>1:
+            return -1;
+        return max(left,right) + 1
+
+
+
+def insert(root,data):
+    if root.data:
+        if data < root.data:
+            if root.left is None:
+                root.left = treeNode(data)
+            else:
+                insert(root.left,data)
+        elif data > root.data:
+            if root.right is None:
+                root.right = treeNode(data)
+            else:
+                insert(root.right,data)
+    else:
+        root.data = data
+
+# def delete(root,data):
+#     if root:
+#         if root.data == data:
+#             remove(root)
+#             print "found: "+root.data
+#         elif data < root.data:
+#             print "left"
+#             delete(root.left, data)
+#         else:
+#             print "right"
+#             delete(root.right, data)
+#     else:
+#         print "not found"
+# def remove(node):
+#     if node.left and node.right:
+#         print "has both left and right children"
+#     elif node.left:
+#         print "has only left"
+#     elif node.right:
+#         print "has only right"
+#     else:
+#         print "has no children"
 def tree_to_Dict(node,dict={}):
     array=[]
     if node:
@@ -92,30 +150,61 @@ def postorder(node):
         postorder(node.right)
         print node.data
 
-def search(node, item):
-    if node:
-        if node.data == item:
-            return node
-        elif node.data<item:
-            return search(node.right, item)
-        elif node.data>item:
-            return search(node.left, item)
-    else:
-        return None
+def search(node,data):
+    if node is None or node.data == data:
+        return node
+    elif data < node.data:
+        return search(node.left, data)
+    else:  # key > node.key
+        return search(node.right, data)
+def invertTree(root):
+    """
+    :type root: TreeNode
+    :rtype: TreeNode
+    """
+    temp = root
+    if root:
+        temp = invert(root)
+    return temp
 
-tree = treeNode('15')
-tree.left=treeNode('9')
-tree.right=treeNode('26')
-tree.left.left=treeNode('8')
-tree.right.left=treeNode('21')
-tree.right.right=treeNode('32')
-dfs(tree)
+def invert(root):
+    temp = root.left
+    root.left = root.right
+    root.right = temp
+    if root.left:
+        return invert(root.left)
+    if root.right:
+        return invert(root.right)
+
+tree = treeNode('4')
+insert(tree,'2')
+insert(tree,'3')
+insert(tree,'1')
+insert(tree,'6')
+insert(tree,'5')
+insert(tree,'7')
+# insert(tree,'8')
+# insert(tree,'9')
+# tree.left=treeNode('2')
+# tree.right=treeNode('6')
+# tree.left.left=treeNode('1')
+# tree.left.right=treeNode('3')
+# tree.right.left=treeNode('5')
+# tree.right.right=treeNode('7')
+# delete(tree,'6')
+# print
+# delete(tree,'7')
+# dfs(tree)
 # bfs(tree)
-# print_Depth(tree)
+print "original"
+print_Depth(tree)
+print tree.isBalanced(tree)
+
 # print tree_to_Dict(tree)
 # preorder(tree)
 # postorder(tree)
 # inorder(tree)
 # tree.printTree()
-# print search(tree,'32')
+# print search(tree,'2')
+# print search(tree,'7')
 # print "tree:", tree.data, tree.left, tree.right
