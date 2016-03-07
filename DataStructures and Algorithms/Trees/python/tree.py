@@ -3,20 +3,24 @@ class treeNode(object):
         self.data = data
         self.left = None
         self.right = None
+
     def isEmpty(self):
         return false
+
     def printTree(self):
         print self.data
         if self.left:
             self.left.printTree()
         if self.right:
             self.right.printTree()
+
     def invertTree(self, root):
         if root:
             root.left, root.right = root.right, root.left
             self.invertTree(root.left)
             self.invertTree(root.right)
         return root
+
     def isBalanced(self, root):
         return self.checkBalance(root)>=0
 
@@ -31,7 +35,11 @@ class treeNode(object):
             return -1;
         return max(left,right) + 1
 
-
+    def depth(self, root):
+        if root is None:
+            return 0
+        #max(self.depth(root.left),self.depth(root.right))+1
+        return max(self.depth(root.left),self.depth(root.right))+1
 
 def insert(root,data):
     if root.data:
@@ -198,7 +206,7 @@ insert(tree,'7')
 # bfs(tree)
 print "original"
 print_Depth(tree)
-print tree.isBalanced(tree)
+print tree.depth(tree)
 
 # print tree_to_Dict(tree)
 # preorder(tree)
